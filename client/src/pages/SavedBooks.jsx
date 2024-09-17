@@ -36,7 +36,7 @@ const SavedBooks = () => {
   const handleDeleteBook = async (bookId) => {
     try {
       const { data } = await removeBook({
-        variables: { bookId },
+        variables: { book : bookId },
         context: {
           headers: {
             Authorization: `Bearer ${Auth.getToken()}`,
