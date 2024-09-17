@@ -29,11 +29,11 @@ const LoginForm = () => {
 
     try {
       const { data } = await loginUser({
-        variables: { input: userFormData },
+        variables: { ...userFormData },
       });
 
       if (data) {
-        const { token } = data.loginUser;
+        const { token } = data;
         Auth.login(token);
       }
     } catch (err) {

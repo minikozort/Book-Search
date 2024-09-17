@@ -4,8 +4,14 @@ export const GET_ME = gql`
   query me {
     me {
       _id
-      name
-      Books
+        username
+        savedBooks{
+        bookId
+        title
+        authors
+        description
+        image
+        }
     }
   }
 `;

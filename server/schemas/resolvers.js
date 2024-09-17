@@ -12,6 +12,7 @@ const resolvers = {
     },
     // By adding context to our query, we can retrieve the logged in user without specifically searching for them
     me: async (parent, args, context) => {
+      console.log(context);
       if (context.user) {
         return User.findOne({ _id: context.user._id });
       }
@@ -20,8 +21,8 @@ const resolvers = {
   },
 
   Mutation: {
-    addUser: async (parent, { name, email, password }) => {
-      const user = await User.create({ name, email, password });
+    addUser: async (parent, { username, email, password }) => {
+      const user = await User.create({ username, email, password });
       const token = signToken(user);
 
       return { token, user };
@@ -42,13 +43,16 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    addBook: async (parent, { userId, skill }, context) => {
+    addBook: async (parent, { book }, context) => {
+      // console.log('hey');
         // If context has a `user` property, that means the user executing this mutation has a valid JWT and is logged in
         if (context.user) {
+          console.log('heycontext');
           return User.findOneAndUpdate(
-            { _id: userId },
+
+            { _id: context.user._id },
             {
-              $addToSet: { books: book },
+              $addToSet: { savedBooks: book },
             },
             {
               new: true,
@@ -56,6 +60,7 @@ const resolvers = {
             }
           );
         }
+        console.log('hey');
         // If user attempts to execute this mutation and isn't logged in, throw an error
         throw AuthenticationError;
       },
