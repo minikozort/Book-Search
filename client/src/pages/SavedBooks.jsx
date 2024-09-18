@@ -36,17 +36,16 @@ const SavedBooks = () => {
   const handleDeleteBook = async (bookId) => {
     try {
       const { data } = await removeBook({
-        variables: { book : bookId },
+        variables: { book : bookId }, // Correct the variable name here
         context: {
           headers: {
             Authorization: `Bearer ${Auth.getToken()}`,
           },
         },
       });
-
-      // Update the local state with the new user data
+console.log(data);
+      // Update local storage if the mutation was successful
       if (data) {
-        // Remove the book ID from localStorage
         removeBookId(bookId);
       }
     } catch (err) {
@@ -56,11 +55,11 @@ const SavedBooks = () => {
 
   return (
     <>
-      <div fluid className="text-light bg-dark p-5">
+      <Container fluid className="text-light bg-dark p-5"> {/* Use Container here */}
         <Container>
           <h1>Viewing saved books!</h1>
         </Container>
-      </div>
+      </Container>
       <Container>
         <h2 className='pt-5'>
           {userData.savedBooks.length

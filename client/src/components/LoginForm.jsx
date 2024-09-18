@@ -4,13 +4,13 @@ import { useMutation } from '@apollo/client'; // Import Apollo Client's useMutat
 import { LOGIN_USER } from '../utils/mutations'; // Import the LOGIN_USER mutation
 import Auth from '../utils/auth';
 
-const LoginForm = () => {
+const LoginForm = (props) => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
   // Use Apollo Client's useMutation hook to handle user login
-  const [loginUser] = useMutation(LOGIN_USER);
+  const [loginUser, {error, data}] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -32,10 +32,10 @@ const LoginForm = () => {
         variables: { ...userFormData },
       });
     
-      console.log(data); // Add this to inspect the response structure
+      console.log(data); 
     
-      if (data && data.login.user) {
-        const { token } = data.login.user;
+      if (data && data.login) {
+        const { token } = data.login;
         Auth.login(token);
       } else {
         throw new Error('Login failed');

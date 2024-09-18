@@ -64,17 +64,16 @@ const resolvers = {
         // If user attempts to execute this mutation and isn't logged in, throw an error
         throw AuthenticationError;
       },
-      removeBook: async (parent, { book }, context) => {
+      removeBook: async (parent, { bookId }, context) => {
         if (context.user) {
           return User.findOneAndUpdate(
             { _id: context.user._id },
-            { $pull: { books: book } },
+            { $pull: { books: bookId } },
             { new: true }
           );
         }
         throw AuthenticationError;
       },
-
   },
 };
 
