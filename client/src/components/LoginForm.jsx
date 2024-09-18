@@ -31,16 +31,19 @@ const LoginForm = () => {
       const { data } = await loginUser({
         variables: { ...userFormData },
       });
-
-      if (data) {
-        const { token } = data;
+    
+      console.log(data); // Add this to inspect the response structure
+    
+      if (data && data.login.user) {
+        const { token } = data.login.user;
         Auth.login(token);
+      } else {
+        throw new Error('Login failed');
       }
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
-
     setUserFormData({
       email: '',
       password: '',
